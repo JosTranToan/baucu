@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h1>📊 Kết quả — {{ election.position_name }}</h1>
+
+    {% if election.is_closed and final_results %}
+        <div style="background:#e8f5e9;border:2px solid #43a047;border-radius:10px;padding:20px;margin-bottom:20px;text-align:center">
+            <div style="font-size:32px">🎉</div>
+            <div style="font-size:20px;font-weight:bold;color:#2e7d32">{{ final_results[0].name }} đắc cử!</div>
+            <div style="color:#666;font-size:14px">{{ final_results[0].vote_count }} phiếu</div>
+        </div>
+    {% endif %}
+
+    {% if final_results %}
+    <h2>Vòng 2 — Kết quả bầu chính thức</h2>
+    <table>
+        <tr><th>#</th><th>Họ tên</th><th>Mã HS</th><th>Số phiếu</th></tr>
+        {% for r in final_results %}
+        <tr {% if loop.first and election.is_closed %}style="background:#f1f8e9;font-weight:bold"{% endif %}>
+            <td>{{ loop.index }}</td>
+            <td>{{ r.name }} {% if loop.first and election.is_closed %}👑{% endif %}</td>
+            <td>{{ r.student_code }}</td>
+            <td>{{ r.vote_count }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    {% endif %}
+
+    <h2>Vòng 1 — Kết quả đề cử</h2>
+    {% if nom_results %}
+    <table>
+        <tr><th>#</th><th>Họ tên</th><th>Mã HS</th><th>Số phiếu</th><th></th></tr>
+        {% for r in nom_results %}
+        <tr {% if r in top_candidates %}style="background:#e3f2fd"{% endif %}>
+            <td>{{ loop.index }}</td>
+            <td>{{ r.name }}</td>
+            <td>{{ r.student_code }}</td>
+            <td>{{ r.vote_count }}</td>
+            <td>{% if r in top_candidates %}<span class="badge badge-blue">Top {{ election.top_n }}</span>{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p style="color:#888">Chưa có phiếu đề cử nào.</p>
+    {% endif %}
+
+    <div class="mt">
+        <a href="/" class="btn btn-secondary">← Quay lại</a>
+    </div>
+</div>
+{% endblock %}

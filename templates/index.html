@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h1>📋 Danh sách bầu cử</h1>
+    {% if term %}
+        <p style="color:#666;font-size:14px;margin-bottom:16px">
+            Học kỳ {{ term.semester }} — Năm {{ term.year }}
+        </p>
+    {% else %}
+        <p style="color:#e53935">⚠️ Chưa có học kỳ hiện tại. Admin vui lòng thiết lập học kỳ.</p>
+    {% endif %}
+</div>
+
+{% if elections %}
+<div style="display:grid;gap:16px;">
+{% for e in elections %}
+<div class="card" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+    <div>
+        <strong style="font-size:16px">{{ e.position_name }}</strong>
+        <div style="margin-top:6px">
+            {% if e.is_closed %}
+                <span class="badge badge-green">✅ Đã kết thúc</span>
+            {% elif e.phase == 1 %}
+                <span class="badge badge-blue">🔵 Vòng 1 — Đề cử (Top {{ e.top_n }})</span>
+            {% else %}
+                <span class="badge badge-orange">🟠 Vòng 2 — Bầu chính thức</span>
+            {% endif %}
+        </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+        {% if not e.is_closed %}
+            {% if e.phase == 1 %}
+                <a href="/vote/{{ e.id }}/nominate" class="btn btn-primary">Đề cử</a>
+            {% else %}
+                <a href="/vote/{{ e.id }}/final" class="btn btn-primary">Bỏ phiếu</a>
+            {% endif %}
+        {% endif %}
+        <a href="/results/{{ e.id }}" class="btn btn-secondary">Xem kết quả</a>
+    </div>
+</div>
+{% endfor %}
+</div>
+{% elif term %}
+<div class="card" style="color:#888;text-align:center;padding:40px">
+    Chưa có cuộc bầu cử nào được mở.<br>Admin vui lòng vào <strong>Quản lý bầu cử</strong> để tạo.
+</div>
+{% endif %}
+{% endblock %}

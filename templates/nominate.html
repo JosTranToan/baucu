@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h1>🔵 Vòng Đề Cử</h1>
+    <h2>{{ election.position_name }}</h2>
+    <p style="color:#666;font-size:14px;margin-bottom:20px">
+        Chọn 1 người bạn muốn đề cử. Top {{ election.top_n }} người có số phiếu cao nhất sẽ vào vòng 2.
+    </p>
+
+    {% if already_voted %}
+        <div style="background:#e8f5e9;padding:16px;border-radius:8px;color:#2e7d32">
+            ✅ Bạn đã đề cử xong. Chờ kết quả vòng 1.
+        </div>
+    {% elif eligible %}
+        <form method="POST">
+            <label>Chọn người đề cử ({{ eligible|length }} người đủ điều kiện)</label>
+            <select name="nominee_id" required>
+                <option value="">-- Chọn học sinh --</option>
+                {% for s in eligible %}
+                    <option value="{{ s.id }}">{{ s.name }} ({{ s.student_code }})</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-primary mt">Xác nhận đề cử</button>
+        </form>
+    {% else %}
+        <div style="color:#e53935">Không có học sinh nào đủ điều kiện cho vị trí này.</div>
+    {% endif %}
+
+    <div class="mt">
+        <a href="/" class="btn btn-secondary">← Quay lại</a>
+    </div>
+</div>
+{% endblock %}

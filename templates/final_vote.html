@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h1>🟠 Vòng Bầu Chính Thức</h1>
+    <h2>{{ election.position_name }}</h2>
+    <p style="color:#666;font-size:14px;margin-bottom:20px">
+        Chọn 1 trong các ứng viên dưới đây. Người cao phiếu nhất sẽ đắc cử.
+    </p>
+
+    {% if already_voted %}
+        <div style="background:#e8f5e9;padding:16px;border-radius:8px;color:#2e7d32">
+            ✅ Bạn đã bỏ phiếu xong. Chờ admin công bố kết quả.
+        </div>
+    {% elif candidates %}
+        <form method="POST">
+            <div style="display:grid;gap:10px;margin-bottom:20px">
+                {% for c in candidates %}
+                <label style="display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #ddd;border-radius:8px;cursor:pointer">
+                    <input type="radio" name="candidate_id" value="{{ c.id }}" required style="width:auto;margin:0">
+                    <span><strong>{{ c.name }}</strong> <span style="color:#888;font-size:13px">({{ c.student_code }})</span></span>
+                </label>
+                {% endfor %}
+            </div>
+            <button class="btn btn-primary">Xác nhận bỏ phiếu</button>
+        </form>
+    {% else %}
+        <div style="color:#e53935">Chưa có ứng viên nào từ vòng đề cử.</div>
+    {% endif %}
+
+    <div class="mt">
+        <a href="/" class="btn btn-secondary">← Quay lại</a>
+    </div>
+</div>
+{% endblock %}

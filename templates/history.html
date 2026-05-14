@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h1>📋 Lịch sử Chức Vụ</h1>
+    {% if records %}
+    <table>
+        <tr><th>Họ tên</th><th>Mã HS</th><th>Chức vụ</th><th>Năm</th><th>Học kỳ</th></tr>
+        {% for r in records %}
+        <tr>
+            <td>{{ r.name }}</td>
+            <td>{{ r.student_code }}</td>
+            <td>{{ r.position_name }}</td>
+            <td>{{ r.year }}</td>
+            <td>HK{{ r.semester }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p style="color:#888">Chưa có lịch sử nào.</p>
+    {% endif %}
+</div>
+{% endblock %}

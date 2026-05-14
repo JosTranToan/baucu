@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h1>⚙️ Quản lý Bầu Cử</h1>
+    {% if term %}
+        <p style="color:#666;font-size:14px">Học kỳ {{ term.semester }} — Năm {{ term.year }}</p>
+    {% else %}
+        <p style="color:#e53935">⚠️ Chưa có học kỳ hiện tại. Vui lòng thiết lập học kỳ trước.</p>
+    {% endif %}
+</div>
+
+{% if term %}
+<div class="card">
+    <h2>📋 Mở cuộc bầu cử mới</h2>
+    <table>
+        <tr><th>Chức vụ</th><th>Top N</th><th></th></tr>
+        {% for p in positions %}
+        {% set has_election = elections | selectattr("position_id", "equalto", p.id) | list %}
+        <tr>
+            <td>{{ p.name }}</td>
+            <td>Top {{ p.top_n }}</td>
+            <td>
+                {% if has_election %}
+                    <span class="badge badge-blue">Đã mở</span>
+                {% else %}
+                    <a href="/admin/elections/create/{{ p.id }}" class="btn btn-primary" style="font-size:12px;padding:4px 10px">Mở bầu cử</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% if elections %}
+<div class="card">
+    <h2>🗳️ Các cuộc bầu cử đang diễn ra</h2>
+    <table>
+        <tr><th>Chức vụ</th><th>Trạng thái</th><th>Hành động</th></tr>
+        {% for e in elections %}
+        <tr>
+            <td>{{ e.position_name }}</td>
+            <td>
+                {% if e.is_closed %}
+                    <span class="badge badge-green">✅ Đã đóng</span>
+                {% elif e.phase == 1 %}
+                    <span class="badge badge-blue">🔵 Vòng 1 — Đề cử</span>
+                {% else %}
+                    <span class="badge badge-orange">🟠 Vòng 2 — Bầu chính thức</span>
+                {% endif %}
+            </td>
+            <td style="display:flex;gap:8px;flex-wrap:wrap">
+                <a href="/results/{{ e.id }}" class="btn btn-secondary" style="font-size:12px;padding:4px 10px">Xem phiếu</a>
+                {% if not e.is_closed %}
+                    {% if e.phase == 1 %}
+                        <a href="/admin/elections/{{ e.id }}/next_phase" class="btn btn-primary" style="font-size:12px;padding:4px 10px">→ Chuyển vòng 2</a>
+                    {% else %}
+                        <a href="/admin/elections/{{ e.id }}/close" class="btn btn-success" style="font-size:12px;padding:4px 10px">🏆 Công bố kết quả</a>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

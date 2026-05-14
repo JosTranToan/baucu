@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="max-width:400px;margin:80px auto;">
+    <div class="card">
+        <h1>🗳️ Đăng nhập</h1>
+        <p style="margin-bottom:20px;color:#666;font-size:14px">Nhập mã học sinh để tham gia bầu cử</p>
+        <form method="POST">
+            <label>Mã học sinh</label>
+            <input type="text" name="student_code" placeholder="VD: HS001" required autofocus>
+            <button class="btn btn-primary" style="width:100%;margin-top:8px">Đăng nhập</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

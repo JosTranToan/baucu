@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bầu Cử Ban Cán Sự</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f0f2f5; color: #333; }
+        nav {
+            background: #1a73e8; color: white; padding: 12px 24px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        nav a { color: white; text-decoration: none; margin-left: 16px; font-size: 14px; }
+        nav a:hover { text-decoration: underline; }
+        .container { max-width: 900px; margin: 32px auto; padding: 0 16px; }
+        .card {
+            background: white; border-radius: 8px; padding: 24px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1); margin-bottom: 20px;
+        }
+        h1 { font-size: 22px; margin-bottom: 16px; }
+        h2 { font-size: 18px; margin-bottom: 12px; color: #1a73e8; }
+        .btn {
+            display: inline-block; padding: 8px 16px; border-radius: 6px;
+            border: none; cursor: pointer; font-size: 14px; text-decoration: none;
+        }
+        .btn-primary { background: #1a73e8; color: white; }
+        .btn-primary:hover { background: #1558b0; }
+        .btn-danger { background: #e53935; color: white; }
+        .btn-success { background: #43a047; color: white; }
+        .btn-secondary { background: #757575; color: white; }
+        input, select, textarea {
+            width: 100%; padding: 8px 12px; border: 1px solid #ddd;
+            border-radius: 6px; font-size: 14px; margin-bottom: 10px;
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }
+        th { background: #f5f5f5; font-weight: 600; }
+        .flash { padding: 10px 16px; border-radius: 6px; margin-bottom: 16px; background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; }
+        .badge-blue { background: #e3f2fd; color: #1565c0; }
+        .badge-green { background: #e8f5e9; color: #2e7d32; }
+        .badge-orange { background: #fff3e0; color: #e65100; }
+        .badge-red { background: #ffebee; color: #c62828; }
+        label { font-size: 14px; display: block; margin-bottom: 4px; font-weight: 500; }
+        .mt { margin-top: 16px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    </style>
+</head>
+<body>
+<nav>
+    <strong>🗳️ Bầu Cử Ban Cán Sự</strong>
+    <div>
+        {% if session.student_name %}
+            <span style="font-size:14px">Xin chào, {{ session.student_name }}</span>
+            {% if session.is_admin %}
+                <a href="/admin/students">👥 Học sinh</a>
+                <a href="/admin/terms">📅 Học kỳ</a>
+                <a href="/admin/elections">⚙️ Quản lý bầu cử</a>
+            {% endif %}
+            <a href="/history">📋 Lịch sử</a>
+            <a href="/logout">Đăng xuất</a>
+        {% endif %}
+    </div>
+</nav>
+<div class="container">
+    {% for msg in get_flashed_messages() %}
+        <div class="flash">{{ msg }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

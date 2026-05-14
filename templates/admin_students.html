@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid-2">
+    <div class="card">
+        <h2>➕ Thêm học sinh</h2>
+        <form method="POST" action="/admin/students/add">
+            <label>Họ tên</label>
+            <input type="text" name="name" placeholder="Nguyễn Văn A" required>
+            <label>Mã học sinh</label>
+            <input type="text" name="student_code" placeholder="HS001" required>
+            <button class="btn btn-primary">Thêm</button>
+        </form>
+    </div>
+    <div class="card">
+        <h2>📋 Import danh sách (CSV)</h2>
+        <form method="POST" action="/admin/students/import">
+            <label>Mỗi dòng: <code>MãHS,Họ tên</code></label>
+            <textarea name="bulk" rows="6" placeholder="HS001,Nguyễn Văn A&#10;HS002,Trần Thị B"></textarea>
+            <button class="btn btn-primary">Import</button>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <h2>👥 Danh sách học sinh ({{ students|length }} người)</h2>
+    <table>
+        <tr><th>#</th><th>Họ tên</th><th>Mã HS</th><th>Trạng thái</th></tr>
+        {% for s in students %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ s.name }}</td>
+            <td>{{ s.student_code }}</td>
+            <td><span class="badge badge-green">Hoạt động</span></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
